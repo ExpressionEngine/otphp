@@ -15,7 +15,7 @@ final class HOTP extends OTP implements HOTPInterface
     private const DEFAULT_WINDOW = 0;
 
     public static function create(
-        null|string $secret = null,
+        $secret = null,
         int $counter = self::DEFAULT_COUNTER,
         string $digest = self::DEFAULT_DIGEST,
         int $digits = self::DEFAULT_DIGITS
@@ -92,14 +92,14 @@ final class HOTP extends OTP implements HOTPInterface
      */
     protected function getParameterMap(): array
     {
-        return [...parent::getParameterMap(), ...[
+        return array_merge(parent::getParameterMap(), [
             'counter' => static function (mixed $value): int {
                 $value = (int) $value;
                 $value >= 0 || throw new InvalidArgumentException('Counter must be at least 0.');
 
                 return $value;
             },
-        ]];
+        ]);
     }
 
     private function updateCounter(int $counter): void

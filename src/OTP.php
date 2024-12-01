@@ -101,7 +101,7 @@ abstract class OTP implements OTPInterface
         $label = $this->getLabel();
         is_string($label) || throw new InvalidArgumentException('The label is not set.');
         $this->hasColon($label) === false || throw new InvalidArgumentException('Label must not contain a colon.');
-        $options = [...$options, ...$this->getParameters()];
+        $options = array_merge($options, $this->getParameters());
         $this->filterOptions($options);
         $params = str_replace(['+', '%7E'], ['%20', '~'], http_build_query($options, '', '&'));
 

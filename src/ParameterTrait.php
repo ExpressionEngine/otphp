@@ -16,19 +16,19 @@ trait ParameterTrait
     /**
      * @var array<non-empty-string, mixed>
      */
-    private array $parameters = [];
+    private $parameters = [];
 
     /**
      * @var non-empty-string|null
      */
-    private null|string $issuer = null;
+    private $issuer = null;
 
     /**
      * @var non-empty-string|null
      */
-    private null|string $label = null;
+    private $label = null;
 
-    private bool $issuer_included_as_parameter = true;
+    private $issuer_included_as_parameter = true;
 
     /**
      * @return array<non-empty-string, mixed>

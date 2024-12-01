@@ -14,7 +14,7 @@ use function is_int;
  */
 final class TOTP extends OTP implements TOTPInterface
 {
-    private readonly ClockInterface $clock;
+    private $clock;
 
     public function __construct(string $secret, ?ClockInterface $clock = null)
     {
@@ -118,8 +118,7 @@ final class TOTP extends OTP implements TOTPInterface
      */
     public function verify(string $otp, null|int $timestamp = null, null|int $leeway = null): bool
     {
-        $timestamp ??= $this->clock->now()
-            ->getTimestamp();
+        $timestamp = is_null($timestamp) ? $this->clock->now()->getTimestamp() : $timestamp;
         $timestamp >= 0 || throw new InvalidArgumentException('Timestamp must be at least 0.');
 
         if ($leeway === null) {
@@ -169,8 +168,7 @@ final class TOTP extends OTP implements TOTPInterface
      */
     protected function getParameterMap(): array
     {
-        return [
-            ...parent::getParameterMap(),
+        return array_merge(parent::getParameterMap(), [
             'period' => static function ($value): int {
                 (int) $value > 0 || throw new InvalidArgumentException('Period must be at least 1.');
 
@@ -183,7 +181,7 @@ final class TOTP extends OTP implements TOTPInterface
 
                 return (int) $value;
             },
-        ];
+        ]);
     }
 
     /**
