@@ -20,10 +20,8 @@ final class TOTP extends OTP implements TOTPInterface
     {
         parent::__construct($secret);
         if ($clock === null) {
-            trigger_deprecation(
-                'spomky-labs/otphp',
-                '11.3.0',
-                'The parameter "$clock" will become mandatory in 12.0.0. Please set a valid PSR Clock implementation instead of "null".'
+            throw new \Exception(
+                'spomky-labs/otphp: The parameter "$clock" will become mandatory in 12.0.0. Please set a valid PSR Clock implementation instead of "null".'
             );
             $clock = new InternalClock();
         }
@@ -32,7 +30,7 @@ final class TOTP extends OTP implements TOTPInterface
     }
 
     public static function create(
-        null|string $secret = null,
+        ?string $secret = null,
         int $period = self::DEFAULT_PERIOD,
         string $digest = self::DEFAULT_DIGEST,
         int $digits = self::DEFAULT_DIGITS,
@@ -70,17 +68,17 @@ final class TOTP extends OTP implements TOTPInterface
     public function getPeriod(): int
     {
         $value = $this->getParameter('period');
-        (is_int($value) && $value > 0) || throw new InvalidArgumentException('Invalid "period" parameter.');
+        if (is_int($value) && $value > 0) return $value;
 
-        return $value;
+        throw new InvalidArgumentException('Invalid "period" parameter.');
     }
 
     public function getEpoch(): int
     {
         $value = $this->getParameter('epoch');
-        (is_int($value) && $value >= 0) || throw new InvalidArgumentException('Invalid "epoch" parameter.');
+        if (is_int($value) && $value >= 0) return $value;
 
-        return $value;
+        throw new InvalidArgumentException('Invalid "epoch" parameter.');
     }
 
     public function expiresIn(): int
@@ -119,18 +117,18 @@ final class TOTP extends OTP implements TOTPInterface
     public function verify(string $otp, ?int $timestamp = null, ?int $leeway = null): bool
     {
         $timestamp = is_null($timestamp) ? $this->clock->now()->getTimestamp() : $timestamp;
-        $timestamp >= 0 || throw new InvalidArgumentException('Timestamp must be at least 0.');
+        if ($timestamp < 0) throw new InvalidArgumentException('Timestamp must be at least 0.');
 
         if ($leeway === null) {
             return $this->compareOTP($this->at($timestamp), $otp);
         }
 
         $leeway = abs($leeway);
-        $leeway < $this->getPeriod() || throw new InvalidArgumentException(
+        if ($leeway >= $this->getPeriod()) throw new InvalidArgumentException(
             'The leeway must be lower than the TOTP period'
         );
         $timestampMinusLeeway = $timestamp - $leeway;
-        $timestampMinusLeeway >= 0 || throw new InvalidArgumentException(
+        if ($timestampMinusLeeway < 0) throw new InvalidArgumentException(
             'The timestamp must be greater than or equal to the leeway.'
         );
 
@@ -170,12 +168,12 @@ final class TOTP extends OTP implements TOTPInterface
     {
         return array_merge(parent::getParameterMap(), [
             'period' => static function ($value): int {
-                (int) $value > 0 || throw new InvalidArgumentException('Period must be at least 1.');
+                if ((int) $value <= 0) throw new InvalidArgumentException('Period must be at least 1.');
 
                 return (int) $value;
             },
             'epoch' => static function ($value): int {
-                (int) $value >= 0 || throw new InvalidArgumentException(
+                if ((int) $value < 0) throw new InvalidArgumentException(
                     'Epoch must be greater than or equal to 0.'
                 );
 

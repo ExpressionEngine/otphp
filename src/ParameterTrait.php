@@ -47,9 +47,9 @@ trait ParameterTrait
     public function getSecret(): string
     {
         $value = $this->getParameter('secret');
-        (is_string($value) && $value !== '') || throw new InvalidArgumentException('Invalid "secret" parameter.');
+        if (is_string($value) && $value !== '') return $value;
 
-        return $value;
+        throw new InvalidArgumentException('Invalid "secret" parameter.');
     }
 
     public function getLabel()
@@ -85,17 +85,17 @@ trait ParameterTrait
     public function getDigits(): int
     {
         $value = $this->getParameter('digits');
-        (is_int($value) && $value > 0) || throw new InvalidArgumentException('Invalid "digits" parameter.');
+        if (is_int($value) && $value > 0) return $value;
 
-        return $value;
+        throw new InvalidArgumentException('Invalid "digits" parameter.');
     }
 
     public function getDigest(): string
     {
         $value = $this->getParameter('algorithm');
-        (is_string($value) && $value !== '') || throw new InvalidArgumentException('Invalid "algorithm" parameter.');
+        if (is_string($value) && $value !== '') return $value;
 
-        return $value;
+        throw new InvalidArgumentException('Invalid "algorithm" parameter.');
     }
 
     public function hasParameter(string $parameter): bool
@@ -151,7 +151,7 @@ trait ParameterTrait
         return [
             'label' => function (string $value): string {
                 assert($value !== '');
-                $this->hasColon($value) === false || throw new InvalidArgumentException(
+                if ($this->hasColon($value) !== false) throw new InvalidArgumentException(
                     'Label must not contain a colon.'
                 );
 
@@ -160,7 +160,7 @@ trait ParameterTrait
             'secret' => static fn (string $value): string => mb_strtoupper(trim($value, '=')),
             'algorithm' => static function (string $value): string {
                 $value = mb_strtolower($value);
-                in_array($value, hash_algos(), true) || throw new InvalidArgumentException(sprintf(
+                if (!in_array($value, hash_algos(), true)) throw new InvalidArgumentException(sprintf(
                     'The "%s" digest is not supported.',
                     $value
                 ));
@@ -168,13 +168,13 @@ trait ParameterTrait
                 return $value;
             },
             'digits' => static function ($value): int {
-                $value > 0 || throw new InvalidArgumentException('Digits must be at least 1.');
+                if ($value <= 0) throw new InvalidArgumentException('Digits must be at least 1.');
 
                 return (int) $value;
             },
             'issuer' => function (string $value): string {
                 assert($value !== '');
-                $this->hasColon($value) === false || throw new InvalidArgumentException(
+                if ($this->hasColon($value) !== false) throw new InvalidArgumentException(
                     'Issuer must not contain a colon.'
                 );
 

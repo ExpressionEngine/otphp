@@ -62,7 +62,7 @@ abstract class OTP implements OTPInterface
     {
         $hash = hash_hmac($this->getDigest(), $this->intToByteString($input), $this->getDecodedSecret(), true);
         $unpacked = unpack('C*', $hash);
-        $unpacked !== false || throw new InvalidArgumentException('Invalid data.');
+        if ($unpacked === false) throw new InvalidArgumentException('Invalid data.');
         $hmac = array_values($unpacked);
 
         $offset = ($hmac[count($hmac) - 1] & 0xF);
@@ -99,8 +99,8 @@ abstract class OTP implements OTPInterface
     protected function generateURI(string $type, array $options): string
     {
         $label = $this->getLabel();
-        is_string($label) || throw new InvalidArgumentException('The label is not set.');
-        $this->hasColon($label) === false || throw new InvalidArgumentException('Label must not contain a colon.');
+        if (!is_string($label)) throw new InvalidArgumentException('The label is not set.');
+        if ($this->hasColon($label) !== false) throw new InvalidArgumentException('Label must not contain a colon.');
         $options = array_merge($options, $this->getParameters());
         $this->filterOptions($options);
         $params = str_replace(['+', '%7E'], ['%20', '~'], http_build_query($options, '', '&'));

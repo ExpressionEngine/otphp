@@ -52,9 +52,11 @@ final class HOTP extends OTP implements HOTPInterface
     public function getCounter(): int
     {
         $value = $this->getParameter('counter');
-        (is_int($value) && $value >= 0) || throw new InvalidArgumentException('Invalid "counter" parameter.');
+        if (is_int($value) && $value >= 0) {
+            return $value;
+        }
 
-        return $value;
+        throw new InvalidArgumentException('Invalid "counter" parameter.');
     }
 
     public function getProvisioningUri(): string
@@ -71,7 +73,7 @@ final class HOTP extends OTP implements HOTPInterface
      */
     public function verify(string $otp, ?int $counter = null, ?int $window = null): bool
     {
-        $counter >= 0 || throw new InvalidArgumentException('The counter must be at least 0.');
+        if ($counter < 0) throw new InvalidArgumentException('The counter must be at least 0.');
 
         if ($counter === null) {
             $counter = $this->getCounter();
@@ -95,7 +97,7 @@ final class HOTP extends OTP implements HOTPInterface
         return array_merge(parent::getParameterMap(), [
             'counter' => static function (mixed $value): int {
                 $value = (int) $value;
-                $value >= 0 || throw new InvalidArgumentException('Counter must be at least 0.');
+                if ($value < 0) throw new InvalidArgumentException('Counter must be at least 0.');
 
                 return $value;
             },

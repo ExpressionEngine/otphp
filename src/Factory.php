@@ -21,15 +21,13 @@ final class Factory implements FactoryInterface
     {
         try {
             $parsed_url = Url::fromString($uri);
-            $parsed_url->getScheme() === 'otpauth' || throw new InvalidArgumentException('Invalid scheme.');
+            if ($parsed_url->getScheme() !== 'otpauth') throw new InvalidArgumentException('Invalid scheme.');
         } catch (Throwable $throwable) {
             throw new InvalidArgumentException('Not a valid OTP provisioning URI', $throwable->getCode(), $throwable);
         }
         if ($clock === null) {
-            trigger_deprecation(
-                'spomky-labs/otphp',
-                '11.3.0',
-                'The parameter "$clock" will become mandatory in 12.0.0. Please set a valid PSR Clock implementation instead of "null".'
+            throw new \Exception(
+                'spomky-labs/otphp: The parameter "$clock" will become mandatory in 12.0.0. Please set a valid PSR Clock implementation instead of "null".'
             );
             $clock = new InternalClock();
         }
@@ -60,7 +58,7 @@ final class Factory implements FactoryInterface
         }
 
         if ($otp->getIssuer() !== null) {
-            $result[0] === $otp->getIssuer() || throw new InvalidArgumentException(
+            if ($result[0] !== $otp->getIssuer()) throw new InvalidArgumentException(
                 'Invalid OTP: invalid issuer in parameter'
             );
             $otp->setIssuerIncludedAsParameter(true);
