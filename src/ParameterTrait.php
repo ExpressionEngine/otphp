@@ -52,7 +52,7 @@ trait ParameterTrait
         return $value;
     }
 
-    public function getLabel(): null|string
+    public function getLabel()
     {
         return $this->label;
     }
@@ -62,7 +62,7 @@ trait ParameterTrait
         $this->setParameter('label', $label);
     }
 
-    public function getIssuer(): null|string
+    public function getIssuer()
     {
         return $this->issuer;
     }

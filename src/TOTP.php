@@ -116,7 +116,7 @@ final class TOTP extends OTP implements TOTPInterface
      * @param 0|positive-int $timestamp
      * @param null|0|positive-int $leeway
      */
-    public function verify(string $otp, null|int $timestamp = null, null|int $leeway = null): bool
+    public function verify(string $otp, ?int $timestamp = null, ?int $leeway = null): bool
     {
         $timestamp = is_null($timestamp) ? $this->clock->now()->getTimestamp() : $timestamp;
         $timestamp >= 0 || throw new InvalidArgumentException('Timestamp must be at least 0.');

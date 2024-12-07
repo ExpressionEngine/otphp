@@ -23,7 +23,7 @@ interface TOTPInterface extends OTPInterface
      * @deprecated Deprecated since v11.1, use ::createFromSecret or ::generate instead
      */
     public static function create(
-        null|string $secret = null,
+        ?string $secret = null,
         int $period = self::DEFAULT_PERIOD,
         string $digest = self::DEFAULT_DIGEST,
         int $digits = self::DEFAULT_DIGITS

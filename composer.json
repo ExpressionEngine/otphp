@@ -17,7 +17,7 @@
     ],
     "require": {
         "ext-mbstring": "*",
-        "paragonie/constant_time_encoding": "^2.0 || ^3.0",
+        "paragonie/constant_time_encoding": "^2.0",
         "psr/clock": "^1.0",
         "symfony/deprecation-contracts": "^3.2"
     },

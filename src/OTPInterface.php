@@ -51,7 +51,7 @@ interface OTPInterface
      * @param null|0|positive-int $input
      * @param null|0|positive-int $window
      */
-    public function verify(string $otp, null|int $input = null, null|int $window = null): bool;
+    public function verify(string $otp, ?int $input = null, ?int $window = null): bool;
 
     /**
      * @return non-empty-string The secret of the OTP
@@ -66,7 +66,7 @@ interface OTPInterface
     /**
      * @return non-empty-string|null The label of the OTP
      */
-    public function getLabel(): null|string;
+    public function getLabel();
 
     /**
      * @return non-empty-string|null The issuer

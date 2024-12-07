@@ -26,7 +26,7 @@ interface HOTPInterface extends OTPInterface
      * @deprecated Deprecated since v11.1, use ::createFromSecret or ::generate instead
      */
     public static function create(
-        null|string $secret = null,
+        ?string $secret = null,
         int $counter = 0,
         string $digest = 'sha1',
         int $digits = 6

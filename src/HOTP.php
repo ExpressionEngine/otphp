@@ -69,7 +69,7 @@ final class HOTP extends OTP implements HOTPInterface
      *
      * @param null|0|positive-int $counter
      */
-    public function verify(string $otp, null|int $counter = null, null|int $window = null): bool
+    public function verify(string $otp, ?int $counter = null, ?int $window = null): bool
     {
         $counter >= 0 || throw new InvalidArgumentException('The counter must be at least 0.');
 
@@ -110,7 +110,7 @@ final class HOTP extends OTP implements HOTPInterface
     /**
      * @param null|0|positive-int $window
      */
-    private function getWindow(null|int $window): int
+    private function getWindow(?int $window): int
     {
         return abs($window ?? self::DEFAULT_WINDOW);
     }
@@ -120,7 +120,7 @@ final class HOTP extends OTP implements HOTPInterface
      * @param 0|positive-int $counter
      * @param null|0|positive-int $window
      */
-    private function verifyOtpWithWindow(string $otp, int $counter, null|int $window): bool
+    private function verifyOtpWithWindow(string $otp, int $counter, ?int $window): bool
     {
         $window = $this->getWindow($window);
 
