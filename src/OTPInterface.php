@@ -71,7 +71,7 @@ interface OTPInterface
     /**
      * @return non-empty-string|null The issuer
      */
-    public function getIssuer(): ?string;
+    public function getIssuer();
 
     /**
      * @param non-empty-string $issuer
