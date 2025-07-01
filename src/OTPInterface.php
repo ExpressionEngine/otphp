@@ -98,7 +98,7 @@ interface OTPInterface
     /**
      * @param non-empty-string $parameter
      */
-    public function getParameter(string $parameter): mixed;
+    public function getParameter(string $parameter);
 
     /**
      * @param non-empty-string $parameter
@@ -112,8 +112,9 @@ interface OTPInterface
 
     /**
      * @param non-empty-string $parameter
+     * @param mixed $value
      */
-    public function setParameter(string $parameter, mixed $value): void;
+    public function setParameter(string $parameter, $value): void;
 
     /**
      * Get the provisioning URI.

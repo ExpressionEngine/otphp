@@ -95,7 +95,7 @@ final class HOTP extends OTP implements HOTPInterface
     protected function getParameterMap(): array
     {
         return array_merge(parent::getParameterMap(), [
-            'counter' => static function (mixed $value): int {
+            'counter' => static function ($value): int {
                 $value = (int) $value;
                 if ($value < 0) throw new InvalidArgumentException('Counter must be at least 0.');
 

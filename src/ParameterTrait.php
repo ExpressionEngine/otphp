@@ -103,7 +103,7 @@ trait ParameterTrait
         return array_key_exists($parameter, $this->parameters);
     }
 
-    public function getParameter(string $parameter): mixed
+    public function getParameter(string $parameter)
     {
         if ($this->hasParameter($parameter)) {
             return $this->getParameters()[$parameter];
@@ -112,7 +112,7 @@ trait ParameterTrait
         throw new InvalidArgumentException(sprintf('Parameter "%s" does not exist', $parameter));
     }
 
-    public function setParameter(string $parameter, mixed $value): void
+    public function setParameter(string $parameter, $value): void
     {
         $map = $this->getParameterMap();
 
