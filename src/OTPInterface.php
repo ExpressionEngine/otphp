@@ -15,12 +15,12 @@ interface OTPInterface
      *
      * @param non-empty-string $secret
      */
-    public static function createFromSecret(string $secret): self;
+    public static function createFromSecret(string $secret);
 
     /**
      * Create a new OTP object. A random 64 bytes secret will be generated.
      */
-    public static function generate(): self;
+    public static function generate();
 
     /**
      * @param non-empty-string $secret

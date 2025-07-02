@@ -27,7 +27,7 @@ interface TOTPInterface extends OTPInterface
         int $period = self::DEFAULT_PERIOD,
         string $digest = self::DEFAULT_DIGEST,
         int $digits = self::DEFAULT_DIGITS
-    ): self;
+    );
 
     public function setPeriod(int $period): void;
 

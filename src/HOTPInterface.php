@@ -30,7 +30,7 @@ interface HOTPInterface extends OTPInterface
         int $counter = 0,
         string $digest = 'sha1',
         int $digits = 6
-    ): self;
+    );
 
     public function setCounter(int $counter): void;
 }

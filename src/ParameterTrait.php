@@ -151,35 +151,32 @@ trait ParameterTrait
         return [
             'label' => function (string $value): string {
                 assert($value !== '');
-                if ($this->hasColon($value) !== false) throw new InvalidArgumentException(
-                    'Label must not contain a colon.'
-                );
-
+                if ($this->hasColon($value) !== \false) {
+                    throw new InvalidArgumentException('Label must not contain a colon.');
+                }
                 return $value;
             },
-            'secret' => static fn (string $value): string => mb_strtoupper(trim($value, '=')),
+            'secret' => static function(string $value): string {
+                return mb_strtoupper(trim($value, '='));
+            },
             'algorithm' => static function (string $value): string {
                 $value = mb_strtolower($value);
-                if (!in_array($value, hash_algos(), true)) throw new InvalidArgumentException(sprintf(
-                    'The "%s" digest is not supported.',
-                    $value
-                ));
-
+                if (!in_array($value, hash_algos(), \true)) {
+                    throw new InvalidArgumentException(sprintf('The "%s" digest is not supported.', $value));
+                }
                 return $value;
-            },
-            'digits' => static function ($value): int {
-                if ($value <= 0) throw new InvalidArgumentException('Digits must be at least 1.');
-
+            }, 'digits' => static function ($value): int {
+                if ($value <= 0) {
+                    throw new InvalidArgumentException('Digits must be at least 1.');
+                }
                 return (int) $value;
-            },
-            'issuer' => function (string $value): string {
+            }, 'issuer' => function (string $value): string {
                 assert($value !== '');
-                if ($this->hasColon($value) !== false) throw new InvalidArgumentException(
-                    'Issuer must not contain a colon.'
-                );
-
+                if ($this->hasColon($value) !== \false) {
+                    throw new InvalidArgumentException('Issuer must not contain a colon.');
+                }
                 return $value;
-            },
+            }
         ];
     }
 
